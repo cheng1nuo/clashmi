@@ -4,63 +4,60 @@ import 'package:clashmi/screens/theme_config.dart';
 import 'package:clashmi/screens/theme_define.dart';
 
 class ThemeDataLight {
-  static const Color homeColor = Colors.white;
-  static const Color mainColor = Colors.white;
-  static const Color mainBgColor = Color(0xFFF0F0F0);
   static ThemeData theme(BuildContext context) {
     return ThemeData(
       useMaterial3: true,
       platform: TargetPlatform.iOS,
-      //fontFamily: 'Roboto',
-      primaryColor: mainColor,
-      primaryColorLight: mainColor,
       colorScheme: ColorScheme.fromSeed(
-        seedColor: mainColor,
+        seedColor: Colors.white,
         brightness: Brightness.light,
+        dynamic: true, // 启用动态颜色
       ),
-      appBarTheme: const AppBarTheme(
+      appBarTheme: AppBarTheme(
         elevation: 0,
-        backgroundColor: mainBgColor,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         systemOverlayStyle: SystemUiOverlayStyle(
           systemNavigationBarIconBrightness: Brightness.dark,
-          systemNavigationBarColor: mainBgColor,
+          systemNavigationBarColor: Theme.of(context).colorScheme.surface,
           systemNavigationBarDividerColor: Colors.transparent,
-          statusBarColor: mainBgColor,
+          statusBarColor: Theme.of(context).colorScheme.surface,
           statusBarBrightness: Brightness.light,
           statusBarIconBrightness: Brightness.dark,
         ),
       ),
-      scaffoldBackgroundColor: mainBgColor,
-      cardColor: mainColor,
-      canvasColor: mainColor,
-      iconTheme: const IconThemeData(
-        color: Colors.black,
+      scaffoldBackgroundColor: Theme.of(context).colorScheme.surface,
+      cardColor: Theme.of(context).colorScheme.surfaceVariant,
+      canvasColor: Theme.of(context).colorScheme.background,
+      iconTheme: IconThemeData(
+        color: Theme.of(context).colorScheme.onSurface,
       ),
-      cardTheme: const CardTheme(color: Colors.white),
+      cardTheme: CardTheme(color: Theme.of(context).colorScheme.surfaceVariant),
       checkboxTheme: CheckboxThemeData(
-        fillColor: WidgetStateProperty.resolveWith((Set<WidgetState> states) {
-          return Colors.white;
+        fillColor: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+          if (states.contains(MaterialState.selected)) {
+            return Theme.of(context).colorScheme.primary;
+          }
+          return Theme.of(context).colorScheme.surfaceVariant;
         }),
-        checkColor: WidgetStateProperty.resolveWith((Set<WidgetState> states) {
-          return ThemeDefine.kColorGreenBright;
+        checkColor: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+          return Theme.of(context).colorScheme.onPrimary;
         }),
-        overlayColor:
-            WidgetStateProperty.resolveWith((Set<WidgetState> states) {
-          return Colors.grey;
+        overlayColor: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+          return Theme.of(context).colorScheme.onSurface.withOpacity(0.12);
         }),
       ),
       radioTheme: RadioThemeData(
-          fillColor: WidgetStateProperty.resolveWith((Set<WidgetState> states) {
-            if (states.contains(WidgetState.selected)) {
-              return ThemeDefine.kColorGreenBright;
-            }
-            return null;
-          }),
-          overlayColor:
-              WidgetStateProperty.resolveWith((Set<WidgetState> states) {
-            return Colors.grey;
-          }),
-          visualDensity: const VisualDensity(horizontal: -1, vertical: -1)),
+        fillColor: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+          if (states.contains(MaterialState.selected)) {
+            return Theme.of(context).colorScheme.primary;
+          }
+          return null;
+        }),
+        overlayColor: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+          return Theme.of(context).colorScheme.onSurface.withOpacity(0.12);
+        }),
+        visualDensity: const VisualDensity(horizontal: -1, vertical: -1),
+      ),
       listTileTheme: const ListTileThemeData(
         dense: true,
         contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
@@ -71,86 +68,103 @@ class ThemeDataLight {
         style: SegmentedButton.styleFrom(
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           visualDensity: const VisualDensity(horizontal: -1, vertical: -1),
-          backgroundColor: mainColor,
-          foregroundColor: Colors.black,
-          selectedForegroundColor: Colors.black,
-          selectedBackgroundColor: mainColor,
+          backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
+          foregroundColor: Theme.of(context).colorScheme.onSurfaceVariant,
+          selectedForegroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
+          selectedBackgroundColor: Theme.of(context).colorScheme.primaryContainer,
         ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-              backgroundColor: ThemeDefine.kColorBlue,
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(35)))),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          foregroundColor: Theme.of(context).colorScheme.onPrimary,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(35),
+          ),
+        ),
+      ),
       dialogTheme: DialogTheme(
-          surfaceTintColor: Colors.white,
-          backgroundColor: Colors.white,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))),
-      progressIndicatorTheme: const ProgressIndicatorThemeData(
-        color: ThemeDefine.kColorBlue,
-        circularTrackColor: Colors.white,
+        surfaceTintColor: Theme.of(context).colorScheme.surfaceTint,
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(4),
+        ),
+      ),
+      progressIndicatorTheme: ProgressIndicatorThemeData(
+        color: Theme.of(context).colorScheme.primary,
+        circularTrackColor: Theme.of(context).colorScheme.surfaceVariant,
       ),
       dropdownMenuTheme: DropdownMenuThemeData(
-          textStyle: TextStyle(
-              color: Colors.black, fontSize: ThemeConfig.kFontSizeGroupItem),
-          inputDecorationTheme: const InputDecorationTheme(
-            labelStyle: TextStyle(color: Colors.grey),
-            floatingLabelStyle: TextStyle(color: ThemeDefine.kColorBlue),
-            helperStyle: TextStyle(color: Colors.grey),
-            hintStyle: TextStyle(color: Colors.grey),
-            errorStyle: TextStyle(color: Colors.red),
-            isDense: true,
-            contentPadding: EdgeInsets.all(8),
-            border: OutlineInputBorder(
-                borderSide: BorderSide(color: ThemeDefine.kColorBlue),
-                borderRadius: BorderRadius.all(Radius.circular(0))),
-            focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: ThemeDefine.kColorBlue),
-                borderRadius: BorderRadius.all(Radius.circular(0))),
-            fillColor: Colors.white,
-            filled: true,
+        textStyle: TextStyle(
+          color: Theme.of(context).colorScheme.onSurface,
+          fontSize: ThemeConfig.kFontSizeGroupItem,
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          labelStyle: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
+          floatingLabelStyle: TextStyle(color: Theme.of(context).colorScheme.primary),
+          helperStyle: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
+          hintStyle: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
+          errorStyle: TextStyle(color: Theme.of(context).colorScheme.error),
+          isDense: true,
+          contentPadding: EdgeInsets.all(8),
+          border: OutlineInputBorder(
+            borderSide: BorderSide(color: Theme.of(context).colorScheme.outline),
+            borderRadius: BorderRadius.all(Radius.circular(0)),
           ),
-          menuStyle: const MenuStyle(
-            backgroundColor: WidgetStatePropertyAll<Color>(mainColor),
-            shadowColor: WidgetStatePropertyAll<Color>(mainColor),
-            surfaceTintColor: WidgetStatePropertyAll<Color>(mainColor),
-          )),
-      inputDecorationTheme: const InputDecorationTheme(
-        labelStyle: TextStyle(color: Colors.grey),
-        floatingLabelStyle: TextStyle(color: ThemeDefine.kColorBlue),
-        helperStyle: TextStyle(color: Colors.grey),
-        hintStyle: TextStyle(color: Colors.grey),
-        errorStyle: TextStyle(color: Colors.red),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
+            borderRadius: BorderRadius.all(Radius.circular(0)),
+          ),
+          fillColor: Theme.of(context).colorScheme.surfaceVariant,
+          filled: true,
+        ),
+        menuStyle: MenuStyle(
+          backgroundColor: MaterialStatePropertyAll<Color>(Theme.of(context).colorScheme.surfaceVariant),
+          shadowColor: MaterialStatePropertyAll<Color>(Theme.of(context).colorScheme.surfaceVariant),
+          surfaceTintColor: MaterialStatePropertyAll<Color>(Theme.of(context).colorScheme.surfaceVariant),
+        ),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        labelStyle: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
+        floatingLabelStyle: TextStyle(color: Theme.of(context).colorScheme.primary),
+        helperStyle: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
+        hintStyle: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
+        errorStyle: TextStyle(color: Theme.of(context).colorScheme.error),
         isDense: true,
         contentPadding: EdgeInsets.all(8),
         border: OutlineInputBorder(
-            borderSide: BorderSide(color: ThemeDefine.kColorBlue),
-            borderRadius: BorderRadius.all(Radius.circular(0))),
+          borderSide: BorderSide(color: Theme.of(context).colorScheme.outline),
+          borderRadius: BorderRadius.all(Radius.circular(0)),
+        ),
         focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: ThemeDefine.kColorBlue),
-            borderRadius: BorderRadius.all(Radius.circular(0))),
-        fillColor: Colors.white,
+          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
+          borderRadius: BorderRadius.all(Radius.circular(0)),
+        ),
+        fillColor: Theme.of(context).colorScheme.surfaceVariant,
         filled: true,
       ),
-      primaryTextTheme: const TextTheme(
-          bodyLarge: TextStyle(color: Colors.black),
-          titleMedium: TextStyle(color: Colors.black)),
-      textTheme: const TextTheme(
-          bodyLarge: TextStyle(color: Colors.black),
-          titleMedium: TextStyle(color: Colors.black)),
-      textSelectionTheme: TextSelectionThemeData(
-        cursorColor: Colors.black,
-        selectionColor: Colors.blue[700],
-        selectionHandleColor: Colors.black,
+      primaryTextTheme: TextTheme(
+        bodyLarge: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+        titleMedium: TextStyle(color: Theme.of(context).colorScheme.onSurface),
       ),
-      menuTheme: const MenuThemeData(
-          style: MenuStyle(
-        backgroundColor: WidgetStatePropertyAll<Color>(mainBgColor),
-      )),
-      popupMenuTheme: const PopupMenuThemeData(
-          color: mainBgColor, surfaceTintColor: Colors.white),
+      textTheme: TextTheme(
+        bodyLarge: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+        titleMedium: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+      ),
+      textSelectionTheme: TextSelectionThemeData(
+        cursorColor: Theme.of(context).colorScheme.primary,
+        selectionColor: Theme.of(context).colorScheme.primary.withOpacity(0.4),
+        selectionHandleColor: Theme.of(context).colorScheme.primary,
+      ),
+      menuTheme: MenuThemeData(
+        style: MenuStyle(
+          backgroundColor: MaterialStatePropertyAll<Color>(Theme.of(context).colorScheme.surfaceVariant),
+        ),
+      ),
+      popupMenuTheme: PopupMenuThemeData(
+        color: Theme.of(context).colorScheme.surfaceVariant,
+        surfaceTintColor: Theme.of(context).colorScheme.surfaceTint,
+      ),
     );
   }
 }
